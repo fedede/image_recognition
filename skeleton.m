@@ -74,7 +74,7 @@ for i = 1:length(Xtrain)
     % Select pixels corresponding to preprocessed mask
     relevant_pixels = H(mask);
     
-%     imshow(relevant_pixels,[]);
+    imshow(relevant_pixels,[]);
 
     % Extract colour feature for detected object in current image
     features(i,1) = median(relevant_pixels);
@@ -83,9 +83,9 @@ for i = 1:length(Xtrain)
     % Convert I to gray-scale image
      Ig = rgb2gray(I);
     % Select pixels corresponding to preprocessed mask
-     relevant_pixels = identify_object(mask);
+%      relevant_pixels = ???(Ig, mask);
      
-     imshow(relevant_pixels,[]);
+%      imshow(relevant_pixels,[]);
     % Extract texture feature (entropy) for detected object
     features(i,2) = entropy(relevant_pixels);
     
