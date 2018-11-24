@@ -24,71 +24,79 @@ masks = {};
 for i = 1:length(Xtrain)
     % Select current image
     I = Xtrain{i};
-    
     %%% Image segmentation: identifying the object
     % Convert I to gray-scale image
-    Ig = rgb2gray(I) ;
+    Ig = rgb2gray(I);
     % Obtain the Otsu threshold
-    otsu_threshold = graythresh(Ig) ;
+    otsu_threshold = graythresh(Ig);
     % Obtain the mask given by this threshold
-%     imshow(Ig, []); 
     mask = imbinarize(Ig, otsu_threshold);
     % Identify object from background (NO NEED TO CODE ANYTHING HERE)
     mask = identify_object(mask);
-    imshow(mask, []);
+    
     %%% Morphological processing: improving quality of mask
     % Morphological opening (remove noise)
-    se =  strel('diamond', 1);
+    se = strel('diamond', 1);
+    mask = imopen(mask, se);
+    
     % Morphological closing (smooth mask)
-    mask =  imopen(mask, se);
-    imshow(mask,[]);
-    %%% Storing mask
     se = strel('diamond', 6);
     mask = imclose(mask, se);
-    imshow(mask,[]);
+%     imshow(mask,[]);
+    
+    %%% Storing mask
     masks{end + 1} = mask;
 
 end
 disp('Preprocessing complete!')
 
 %% Feature Extraction Stage
-% disp('Feature Extraction Stage in progress...')
-% % Creating empy array of features
-% features = zeros(length(Xtrain),3);
-% 
-% for i = 1:length(Xtrain)
-%     
-%     % Select current image
-%     I = Xtrain{i};
-%     % Select current mask
-%     mask = masks{i};
-%     
-%     %%% Feature 1: Colour
-%     % Convert I to HSV image
-%     HSV = .. ;
-%     % Select Hue component
-%     H = HSV(:,:,1);
-%     % Select pixels corresponding to preprocessed mask
-%     relevant_pixels = H(mask);
-%     % Extract colour feature for detected object in current image
-%     features(i,1) = .. ;
-%     
-%     %%% Feature 2: Texture
-%     % Convert I to gray-scale image
-%     Ig = .. ;
-%     % Select pixels corresponding to preprocessed mask
-%     relevant_pixels = .. ;
-%     % Extract texture feature (entropy) for detected object
-%     features(i,2) = .. ;
-%     
-%     %%% Feature 3: Shape
-%     % Obtain object properties (NO NEED TO CODE ANYTHING HERE)
-%     [area, perimeter] = get_object_props(mask);
-%     % Extract shape feature for detected object
+disp('Feature Extraction Stage in progress...')
+% Creating empy array of features
+features = zeros(length(Xtrain),3);
+
+for i = 1:length(Xtrain)
+    
+    % Select current image
+    I = Xtrain{i};
+    % Select current mask
+    mask = masks{i};
+
+    %%% Feature 1: Colour
+    % Convert I to HSV image
+    HSV = rgb2hsv(I);
+    
+%     imshow(HSV,[]);
+
+    % Select Hue component
+    H = HSV(:,:,1);
+    
+    % Select pixels corresponding to preprocessed mask
+    relevant_pixels = H(mask);
+    
+%     imshow(relevant_pixels,[]);
+
+    % Extract colour feature for detected object in current image
+    features(i,1) = median(relevant_pixels);
+    
+    %%% Feature 2: Texture
+    % Convert I to gray-scale image
+     Ig = rgb2gray(I);
+    % Select pixels corresponding to preprocessed mask
+     relevant_pixels = identify_object(mask);
+     
+     imshow(relevant_pixels,[]);
+    % Extract texture feature (entropy) for detected object
+    features(i,2) = entropy(relevant_pixels);
+    
+    %%% Feature 3: Shape
+    % Obtain object properties (NO NEED TO CODE ANYTHING HERE)
+    [area, perimeter] = get_object_props(mask);
+    % Extract shape feature for detected object
 %     features(i,3) = .. ;
-%     
-% end
-% disp('Feature Extraction complete!')
+    
+end
+disp('Feature Extraction complete!')
 % 
 % %% Normalization Stage
 % disp('Normalization Stage in progress...')
