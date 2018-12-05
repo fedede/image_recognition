@@ -157,10 +157,7 @@ for i = 1:length(Xtest)
     % Select current image
     I = Xtest{i};
     
-    %%% Image segmentation: identifying the objecfeatures_testt
-    % CODE GOES HERE
-    %%% Morphological processing: improving quality of mask
-    % CODE GOES HERE
+  
     
     %%% Image segmentation: identifying the object
     % Convert I to gray-scale image
