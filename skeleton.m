@@ -53,7 +53,7 @@ disp('Preprocessing complete!')
 %% Feature Extraction Stage
 disp('Feature Extraction Stage in progress...')
 % Creating empy array of features
-features = zeros(length(Xtrain),3);
+features = zeros(length(Xtrain),4);
 
 for i = 1:length(Xtrain)
     
@@ -94,7 +94,7 @@ for i = 1:length(Xtrain)
     [area, perimeter, box_area, box_perimeter] = get_object_props(mask);
     % Extract shape feature for detected object
     features(i,3) =  area/box_area;
-    
+    features(i,4) =  perimeter/box_perimeter;
     
 end
 disp('Feature Extraction complete!')
@@ -106,12 +106,13 @@ feat_mean = mean(features);
 % Obtain the standard deviation of each feature
 feat_std  = std(features);
 % Normalize the extracted features
-features_n = zeros(length(Xtrain),3);
+features_n = zeros(length(Xtrain),4);
 
 for i=1:size(features,1)
     features_n(i,1) = (features(i,1) - feat_mean(1)) / feat_std(1);
     features_n(i,2) = (features(i,2) - feat_mean(2)) / feat_std(2);
     features_n(i,3) = (features(i,3) - feat_mean(3)) / feat_std(3);
+    features_n(i,4) = (features(i,4) - feat_mean(4)) / feat_std(4);
 end
 
 % Check if normalization was correctly implemented (VERY IMPORTANT)
@@ -183,7 +184,7 @@ end
 % 
 %%% Perform Feature Extraction
 % Creating empy array of features
-features_test = zeros(length(Xtest),3);
+features_test = zeros(length(Xtest),4);
 for i = 1:length(Xtest)
     
     % Select current image
@@ -237,18 +238,20 @@ for i = 1:length(Xtest)
     [area, perimeter, box_area, box_perimeter] = get_object_props(mask);
     % Extract shape feature for detected object
     features_test(i,3) =  area/box_area;
+    features_test(i,4) =  perimeter/box_perimeter;
 
 end
 
 %%% Perform Normalization
 % Note that you do not need to recompute the mean and standard deviation
 % again. You need to use the values from training.
-features_test_n = zeros(length(Xtest),3);
+features_test_n = zeros(length(Xtest),4);
 
 for i=1:size(features_test,1)
     features_test_n(i,1) = (features_test(i,1) - feat_mean(1)) / feat_std(1);
     features_test_n(i,2) = (features_test(i,2) - feat_mean(2)) / feat_std(2);
     features_test_n(i,3) = (features_test(i,3) - feat_mean(3)) / feat_std(3);
+    features_test_n(i,4) = (features_test(i,4) - feat_mean(4)) / feat_std(4);
 end
 
 %%% Test the model against the new extracted features
