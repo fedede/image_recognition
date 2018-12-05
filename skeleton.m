@@ -33,17 +33,17 @@ for i = 1:length(Xtrain)
     mask = imbinarize(Ig, otsu_threshold);
     % Identify object from background (NO NEED TO CODE ANYTHING HERE)
     mask = identify_object(mask);
-    
+    %imshow(mask,[]);
     %%% Morphological processing: improving quality of mask
     % Morphological opening (remove noise)
     se = strel('diamond', 1);
     mask = imopen(mask, se);
-    
+    %imshow(mask,[]);
     % Morphological closing (smooth mask)
     se = strel('diamond', 6);
     mask = imclose(mask, se);
-%     imshow(mask,[]);
-    
+    %imshow(mask,[]);
+        
     %%% Storing mask
     masks{end + 1} = mask;
 
