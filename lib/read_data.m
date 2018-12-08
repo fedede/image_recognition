@@ -12,17 +12,17 @@ function [images, labels] = read_data(selected_class)
 %       -1 for negative class (determined by input)
 
 images = {};
-for i = 1:20
+for i = 1:40
     images{end+1} = imread(['data/1-tie/' num2str(i) '.jpg']);
     images{end+1} = imread(['data/2-cloudcar/' num2str(i) '.jpg']);
     images{end+1} = imread(['data/3-n1/' num2str(i) '.jpg']);
     images{end+1} = imread(['data/4-falcon/' num2str(i) '.jpg']);
 end
-labels = repmat([1 2 3 4],[1 20]);
+labels = repmat([1 2 3 4],[1 40]);
 labels(labels ~= selected_class) = -1;  
 labels(labels == selected_class) =  1;
 
-shuf = randperm(80);
+shuf = randperm(160);
 images = images(shuf);
 labels = labels(shuf);
 end
