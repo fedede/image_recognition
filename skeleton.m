@@ -66,16 +66,12 @@ for i = 1:length(Xtrain)
     % Convert I to HSV image
     HSV = rgb2hsv(I);
     
-%     imshow(HSV,[]);
-
     % Select Hue component
     H = HSV(:,:,1);
     
     % Select pixels corresponding to preprocessed mask
     relevant_pixels = H(mask);
     
-    %imshow(relevant_pixels,[]);
-
     % Extract colour feature for detected object in current image
     features(i,1) = median(relevant_pixels);
     features(i,2) = entropy(relevant_pixels);
@@ -86,7 +82,6 @@ for i = 1:length(Xtrain)
     % Select pixels corresponding to preprocessed mask
     relevant_pixels = Ig(mask);
      
-%      imshow(relevant_pixels,[]);
     % Extract texture feature (entropy) for detected object
     features(i,3) = entropy(relevant_pixels);
     features(i,4) = entropy(entropyfilt(relevant_pixels));
@@ -163,7 +158,6 @@ for i = 1:length(Xtest)
     % Select current image
     I = Xtest{i};
     
-  
     
     %%% Image segmentation: identifying the object
     % Convert I to gray-scale image
@@ -207,8 +201,6 @@ for i = 1:length(Xtest)
     % Select pixels corresponding to preprocessed mask
     relevant_pixels = H(mask);
     
-    %imshow(relevant_pixels,[]);
-
     % Extract colour feature for detected object in current image
     features_test(i,1) = median(relevant_pixels);
     features_test(i,2) = entropy(relevant_pixels);
@@ -219,7 +211,6 @@ for i = 1:length(Xtest)
     % Select pixels corresponding to preprocessed mask
     relevant_pixels = Ig(mask);
      
-%      imshow(relevant_pixels,[]);
     % Extract texture feature (entropy) for detected object
     features_test(i,3) = entropy(relevant_pixels);
     features_test(i,4) = entropy(entropyfilt(relevant_pixels));
